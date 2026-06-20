@@ -1,21 +1,21 @@
 package net.turbohopper.mixin;
 
-import net.minecraft.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(HopperBlockEntity.class)
-public class HopperBlockEntityCooldownMixin {
+public abstract class HopperBlockEntityCooldownMixin {
     @ModifyArg(
-        method = "insertAndExtract",
+        method = "tryMoveItems",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/block/entity/HopperBlockEntity;setTransferCooldown(I)V"
+            target = "Lnet/minecraft/world/level/block/entity/HopperBlockEntity;setCooldown(I)V"
         ),
         index = 0
     )
-    private static int forceOneTickCooldown(int original) {
-        return 1; // Always set cooldown to 1 tick
+    private static int reduceCooldown(int cooldown) {
+        return 1;
     }
 }
